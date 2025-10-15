@@ -1,7 +1,10 @@
 use reqwest::StatusCode;
 use uuid::Uuid;
 
-use crate::{controllers::ApiError, repositories::RepositoryError};
+use crate::{
+    controllers::ApiError, providers::image_processor::ImageProcessorError,
+    repositories::RepositoryError,
+};
 
 #[derive(Debug, thiserror::Error)]
 pub enum FeedServiceError {
@@ -16,6 +19,9 @@ pub enum FeedServiceError {
 
     #[error("the feed {0} was not found")]
     FeedNotFound(Uuid),
+
+    #[error("an image processing error ocurred: {0}")]
+    ImageProcessing(#[from] ImageProcessorError),
 
     #[error("a repository error ocurred: {0}")]
     Repository(#[from] RepositoryError),

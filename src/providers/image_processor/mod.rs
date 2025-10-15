@@ -16,4 +16,7 @@ pub trait ImageProcessor: Sync + Send {
     ///   - We can also embed the image information in the src attribute of the img tag, in that
     ///   case it should return the encoded image information
     async fn process_image_url(&self, url: &str) -> Result<String>;
+
+    /// Process a favicon and returns the result of the processing
+    async fn process_favicon(&self, url: &str) -> Result<Option<String>>;
 }

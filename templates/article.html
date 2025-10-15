@@ -6,6 +6,7 @@
         <main class="main">
             <div class="content">
                 <div id="header" class="section-header">
+                    <img src="{{ context.feed.favicon_url | default(value='/static/images/favicon.png') }}" class="favicon" />
                     <h1> {{ context.feed.title }} </h1>
                 </div>
                 <div id="body" class="body">

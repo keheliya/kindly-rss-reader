@@ -262,12 +262,19 @@ where
             feed_url.origin().unicode_serialization()
         };
 
+        let feed_id = Uuid::new_v4();
+        let router_path = self.get_article_router_path(feed_id);
+        let file_path = self.get_article_file_path(feed_id);
+        let image_processor = ImageProcessorFsImpl::new(router_path, file_path);
+
+        let favicon_url = image_processor.process_favicon(&link).await?;
+
         let feed = Feed {
-            id: Uuid::new_v4(),
+            id: feed_id,
             title: parsed_feed.title,
             link,
             url: feed_url.into(),
-            favicon_url: None,
+            favicon_url,
             last_updated: DateTime::default(),
             unread_count: 0,
         };

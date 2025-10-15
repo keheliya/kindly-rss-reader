@@ -2,3 +2,4 @@
 database.db
 /articles
 .DS_store
+cargo_output.log
