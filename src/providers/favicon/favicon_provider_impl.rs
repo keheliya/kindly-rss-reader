@@ -39,10 +39,6 @@ impl FaviconProviderImpl {
                         let tld = parts.last().unwrap_or(&"");
                         let domain = parts.get(parts.len() - 2).unwrap_or(&"");
                         
-                        if *domain == "bbci" {
-                            return format!("{}://www.bbc.{}/", scheme, tld);
-                        }
-                        
                         return format!("{}://www.{}.{}/", scheme, domain, tld);
                     }
                 }
