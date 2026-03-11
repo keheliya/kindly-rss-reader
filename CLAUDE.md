@@ -53,6 +53,17 @@ Layered architecture with clear separation:
 - **Templates:** Template name constants (e.g., `TEMPLATE_NAME_FEED_LIST`), context objects passed to MiniJinja
 - **Modules:** Each feature area has its own `mod.rs` aggregating public items, with separate `error.rs` files
 
+## Code Style Preferences
+
+- **Prefer `if let` over `match` with empty error arms:** Use `if let Ok(x) = expr {}` instead of `match expr { Ok(x) => {}, Err(_) => {} }`
+- **Use idiomatic emptiness checks:** Prefer `!collection.is_empty()` over `collection.len() > 0`
+- **Extract magic values into associated constants:** Move repeated literals and inline arrays into `const` associated constants on the impl block (e.g., `const KNOWN_FEED_PREFIXES: [&str; 4] = [...]`)
+- **CSS over inline styles:** Extract inline `style` attributes in templates into CSS classes in the stylesheet
+- **Minimize wrapper elements:** Remove unnecessary container `<div>`s in templates when the parent already provides the needed layout
+- **Logging:** Use `tracing::info!` / `tracing::error!` with inline format variables (e.g., `info!("message {variable}")`) at key decision points
+- **Clippy:** Respect clippy lints; when suppression is genuinely needed, use `#[allow(clippy::lint_name)]` with a specific lint
+- **No trailing whitespace:** Keep lines clean of trailing spaces
+
 ## Environment Variables
 
 | Variable | Default | Description |
