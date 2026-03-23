@@ -112,13 +112,14 @@ impl FeedRepository for FeedRepositoryImpl {
     ) -> Result<(), RepositoryError> {
         let feed_id = feed_id.to_string();
         transaction!(self, {
-            for article in articles {
-                let mut stmt = self.connection.prepare(
+            let mut stmt = self.connection.prepare(
                 r#"
                     INSERT INTO article (id, feed_id, title, author, guid, link, last_updated, html_parsed, content, read)
                     VALUES (:id, :feed_id, :title, :author, :guid, :link, :last_updated, :html_parsed, :content, 0)
                     ON CONFLICT(guid) DO NOTHING;
-                )"#)?;
+                "#,
+            )?;
+            for article in articles {
                 stmt.bind((":id", article.id.to_string().as_str()))?;
                 stmt.bind((":feed_id", feed_id.as_str()))?;
                 stmt.bind((":title", article.title.as_str()))?;
@@ -132,8 +133,8 @@ impl FeedRepository for FeedRepositoryImpl {
                 // Execute the statement
                 stmt.next()?;
                 stmt.reset()?;
-                drop(stmt);
             }
+            drop(stmt);
 
             let mut stmt = self
                 .connection
